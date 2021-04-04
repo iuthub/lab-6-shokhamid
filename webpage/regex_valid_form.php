@@ -4,7 +4,8 @@
 	$text="";
 	$replaceText="";
 	$replacedText="";
-
+	$answer="";
+	$m="";
 	$match="Not checked yet.";
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
@@ -19,6 +20,19 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 					} else {
 						$match="Does not match!";
 					}
+	if(preg_match("/quick/", $text)) {
+		$answer = "Contains quick";
+	}
+
+	if(preg_match("/\+998-\d\d-\d\d\d-\d\d\d\d/", $text)) {
+		$answer ="Contains phone number";
+	}
+	$replaced = str_replace(' ', '', $text);
+	$remove = preg_replace("/[^0-9,.]/", "", $text );
+	$removeNewLine = preg_replace("/[\n]/", "", $text );
+	preg_match("/\[+[ A-z]+\]/", $text, $m);
+
+	
 }
 
 ?>
@@ -44,6 +58,11 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 			<dt>Output Text</dt>
 			<dd><?=	$match ?></dd>
+			<dd><?=	$answer ?></dd>
+			<dd><?=	$replaced ?></dd>
+			<dd><?=	$remove ?></dd>
+			<dd><?=	$removeNewLine ?></dd>
+			<dd><?=	implode(',', $m) ?></dd>
 
 			<dt>Replaced Text</dt>
 			<dd> <code><?=	$replacedText ?></code></dd>
